@@ -66,6 +66,24 @@ public:
 
 	void AddRelation( Relation* r );
 
+	Node* FindNodeAt( double lat, double lon ) const;
+
+	std::vector<Way*> FindWaysWithRef( std::vector<Way*> ws, Node* n ) const;
+
+	void test();
+
+};
+
+class Node_Comparator
+{
+public:
+	Node_Comparator( double lat, double lon, double precision ) : m_lat(lat), m_lon(lon), m_precision(precision){}
+	bool operator () ( const std::pair<long long, Node*> &pair ) const;
+	
+private:
+	double m_lat;
+	double m_lon;
+	double m_precision;
 };
 
 

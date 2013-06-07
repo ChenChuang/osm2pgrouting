@@ -55,8 +55,10 @@ public:
 	Node( long long id=-1, double lat=0, double lon=0 );
 	//! Destructor
 	virtual ~Node();
+	
+	void printstr() const;
 };
 
-
+ 
 } // end namespace osm
 #endif

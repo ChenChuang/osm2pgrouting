@@ -64,9 +64,35 @@ const
 	return (it!=m_Nodes.end() ) ? it->second : 0;
 }
 
+Node* OSMDocument::FindNodeAt( double lat, double lon )
+const
+{
+	std::map<long long, Node*>::const_iterator it = std::find_if( m_Nodes.begin(), m_Nodes.end(), Node_Comparator(lat, lon, 0.000001) );
+	return (it!=m_Nodes.end() ) ? it->second : NULL;
+}
+
+std::vector<Way*> OSMDocument::FindWaysWithRef( std::vector<Way*> ws, Node* n )
+const
+{
+	std::vector<Way*>::const_iterator it(ws.begin());
+	std::vector<Way*>::const_iterator last(ws.end());
+
+	std::vector<Way*> rs;
+	
+	while(it!=last)
+	{
+		Way* w = *it++;
+		std::vector<Node*>::const_iterator  it_node = std::find(w->m_NodeRefs.begin(), w->m_NodeRefs.end(), n );
+		if (it_node != w->m_NodeRefs.end())
+		{
+			rs.push_back(w);
+		}
+	}
+	return rs;
+}
+
 void OSMDocument::SplitWays()
 {
-	
 	std::vector<Way*>::const_iterator it(m_Ways.begin());
 	std::vector<Way*>::const_iterator last(m_Ways.end());
 
@@ -171,5 +197,44 @@ void OSMDocument::SplitWays()
 	}
 
 } // end SplitWays
+
+bool Node_Comparator::operator () ( const std::pair<long long, Node*> &pair )
+const
+{	
+	return ( 
+	(((pair.second)->lat - m_lat >= 0 && (pair.second)->lat - m_lat < m_precision) || (m_lat - (pair.second)->lat >= 0 && m_lat - (pair.second)->lat < m_precision)) && 
+	(((pair.second)->lon - m_lon >= 0 && (pair.second)->lon - m_lon < m_precision) || (m_lon - (pair.second)->lon >= 0 && m_lon - (pair.second)->lon < m_precision)) 
+	);
+}
+
+
+
+
+void OSMDocument::test()
+{
+	//Node* tn = this->FindNodeAt(39.7814771, 117.0522314);
+	//Node* tn = this->FindNodeAt(39.7814111, 117.0482403);
+	//Node* tn = this->FindNodeAt(39.8027487,116.7982348);
+	Node* tn = this->FindNode( 2272249421 );
+	if ( tn == NULL )
+	{
+		std::cout << "no node found" << std::endl;
+	}
+	else
+	{
+		tn->printstr();
+	}
+
+	std::vector<Way*> ws = this->FindWaysWithRef( m_Ways, tn );
+
+	std::vector<Way*>::const_iterator it(ws.begin());
+	std::vector<Way*>::const_iterator last(ws.end());
+	while(it!=last)
+	{
+		Way* w = *it++;
+		w->printstr();
+	}
+}
+
 
 } // end namespace osm

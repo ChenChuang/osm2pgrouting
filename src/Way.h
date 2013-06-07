@@ -89,6 +89,8 @@ public:
 	void AddNodeRef( Node* pNode );
 	void AddTag( Tag* t );
 
+	void printstr();
+
 };
 
 

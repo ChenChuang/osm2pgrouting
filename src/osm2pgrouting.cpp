@@ -157,7 +157,7 @@ int main(int argc, char* argv[])
 	cout << "Trying to load data" << endl;
 
 	OSMDocument* document = new OSMDocument( *config );
-        OSMDocumentParserCallback callback( *document );
+    OSMDocumentParserCallback callback( *document );
 
 	cout << "Trying to parse data" << endl;
 
@@ -169,6 +169,9 @@ int main(int argc, char* argv[])
 		return 1;
 	}
 	
+	//document->test();
+	//return 0;
+
 	cout << "Split ways" << endl;
 
 	document->SplitWays();

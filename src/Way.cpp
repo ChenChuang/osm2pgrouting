@@ -21,7 +21,7 @@
 #include "stdafx.h"
 #include "Way.h"
 #include "Tag.h"
-
+#include "Node.h"
 
 namespace osm
 {
@@ -48,6 +48,21 @@ void Way::AddNodeRef( Node* pNode )
 void Way::AddTag( Tag* t )
 {
 	m_Tags.push_back( t );
+}
+
+void Way::printstr()
+{
+	std::cout << "Way id: " << id << " osm_id: " << osm_id << " visible: " << visible << " length: " << length << " oneway: " << oneway << std::endl;
+	std::vector<Node*>::const_iterator it_node( m_NodeRefs.begin());	
+	std::vector<Node*>::const_iterator last_node( m_NodeRefs.end());
+
+	while(it_node!=last_node)
+	{
+		Node* node = *it_node++;
+		node->printstr();
+	}
+
+	std::cout << std::endl;
 }
 
 } // end namespace osm

@@ -37,4 +37,10 @@ Node::~Node()
 {
 }
 
+void Node::printstr()
+const
+{
+	std::cout << "Node id: " << this->id << ", latlon: " << this->lat << "," << this->lon << ", numsOfUse: " << this->numsOfUse << std::endl;
+}
+
 } // end namespace osm
